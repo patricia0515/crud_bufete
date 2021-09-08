@@ -26,8 +26,5 @@ Route::resource('crear-cliente', ClienteController::class);
 Route::resource('crear-abogado', AbogadoController::class);
 Route::resource('crear-caso', CasoController::class);
 
-Route::resource('crear-casos', CasoController::class);
-
-
 
 
