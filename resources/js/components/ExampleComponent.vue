@@ -590,8 +590,8 @@
                             <v-card-text>
                             
                                 <v-data-table
-                                  :headers="headers"
-                                  :items="desserts"
+                                  :headers="headers3"
+                                  :items="casos"
                                   :items-per-page="10"
                                   class="elevation-1"
                                 >
@@ -659,6 +659,7 @@ export default {
         //Variables para traer los registros activos
         clientes:[],
         abogados:[],
+        casos:[],
 
         //Variables para los mensajes de alerta
         alert: false,
@@ -705,6 +706,23 @@ export default {
                   
                     
                 ],
+                //Registros de la tabla abogados
+                headers3: [
+                    {
+                        
+                        align: 'start',
+                        sortable: false,
+                        value: 'id',
+                    },
+
+                        { text: 'ID', value: 'ID' },
+                        { text: 'Cliente', value: 'CLIENTE' },
+                        { text: 'Abogado', value: 'ABOGADO' },
+                        { text: 'N N° Expediente', value: 'N° EXPEDIENTE' },
+                        { text: 'Estado', value: 'ESTADO' },
+                      
+                        
+                    ],
         desserts: [],
 
         //Validaciones desde el front
@@ -774,6 +792,16 @@ export default {
         axios.get("crear-abogado").then(response => {
             this.abogados = response.data;
             console.log(this.abogados)
+            })
+            .catch((error) => {
+            console.log("error " + error);
+            });
+        },
+        listaCasos() {
+        this.casos = [];
+        axios.get("crear-caso").then(response => {
+            this.casos = response.data;
+            console.log(this.casos)
             })
             .catch((error) => {
             console.log("error " + error);
@@ -883,6 +911,7 @@ export default {
   mounted() {
     this.listaClientes();
     this.listaAbogados();
+    this.listaCasos();
   },
 };
 

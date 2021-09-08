@@ -6,6 +6,7 @@ use App\Models\Caso;
 use App\Models\Cliente;
 use App\Models\Abogado;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CasoController extends Controller
 {
@@ -16,9 +17,19 @@ class CasoController extends Controller
      */
     public function index()
     {
-        $casos = Caso::all();
-        
-        return view('principal', compact('casos'));
+        $casos = Caso::join('clientes as cli','casos.cliente','=','cli.id_cliente')
+                        ->join('abogados as abg','casos.abogado','=','abg.id_abogado')
+                        ->select(
+                            DB::raw("CONCAT(cli.nombres,' ',cli.apellidos) as CLIENTE"),
+                            DB::raw("CONCAT(abg.nombres,' ',abg.apellidos) as ABOGADO"),
+                            'casos.id_caso as ID',
+                            'casos.num_expediente as N° EXPEDIENTE',
+                            'casos.estado as ESTADO'  
+                        )
+                        ->where('casos.activo','=',1)
+                        ->orderBy("id_caso", "desc")
+                        ->get();
+                        return($casos);
     }
 
     /**

@@ -2723,6 +2723,7 @@ __webpack_require__.r(__webpack_exports__);
       //Variables para traer los registros activos
       clientes: [],
       abogados: [],
+      casos: [],
       //Variables para los mensajes de alerta
       alert: false,
       mensajeAlert: [],
@@ -2771,6 +2772,27 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: 'Apellidos',
         value: 'apellidos'
+      }],
+      //Registros de la tabla abogados
+      headers3: [{
+        align: 'start',
+        sortable: false,
+        value: 'id'
+      }, {
+        text: 'ID',
+        value: 'ID'
+      }, {
+        text: 'Cliente',
+        value: 'CLIENTE'
+      }, {
+        text: 'Abogado',
+        value: 'ABOGADO'
+      }, {
+        text: 'N N° Expediente',
+        value: 'N° EXPEDIENTE'
+      }, {
+        text: 'Estado',
+        value: 'ESTADO'
       }],
       desserts: [],
       //Validaciones desde el front
@@ -2849,8 +2871,19 @@ __webpack_require__.r(__webpack_exports__);
         console.log("error " + error);
       });
     },
-    crearCliente: function crearCliente() {
+    listaCasos: function listaCasos() {
       var _this3 = this;
+
+      this.casos = [];
+      axios.get("crear-caso").then(function (response) {
+        _this3.casos = response.data;
+        console.log(_this3.casos);
+      })["catch"](function (error) {
+        console.log("error " + error);
+      });
+    },
+    crearCliente: function crearCliente() {
+      var _this4 = this;
 
       //Petición para guardar el registro en la base de datos
       axios.post('crear-cliente', {
@@ -2861,15 +2894,15 @@ __webpack_require__.r(__webpack_exports__);
         celular: this.celular,
         direccion: this.direccion
       }).then(function (response) {
-        _this3.mensajeAlert = "¡Cliente creado con exito! Cliente: " + _this3.num_documento;
-        _this3.alert = true;
-        _this3.colorMen = 'success';
+        _this4.mensajeAlert = "¡Cliente creado con exito! Cliente: " + _this4.num_documento;
+        _this4.alert = true;
+        _this4.colorMen = 'success';
 
-        _this3.limpiarDatos();
+        _this4.limpiarDatos();
       }); //Fin Petición para guardar el registro en la base de datos
     },
     crearAbogado: function crearAbogado() {
-      var _this4 = this;
+      var _this5 = this;
 
       //Petición para guardar el registro en la base de datos
       axios.post('crear-abogado', {
@@ -2881,15 +2914,15 @@ __webpack_require__.r(__webpack_exports__);
         celular: this.celular,
         direccion: this.direccion
       }).then(function (response) {
-        _this4.mensajeAlert = "¡Abogado creado con exito!  Abogado: " + _this4.num_documento;
-        _this4.alert = true;
-        _this4.colorMen = 'success';
+        _this5.mensajeAlert = "¡Abogado creado con exito!  Abogado: " + _this5.num_documento;
+        _this5.alert = true;
+        _this5.colorMen = 'success';
 
-        _this4.limpiarDatos();
+        _this5.limpiarDatos();
       }); //Fin Petición para guardar el registro en la base de datos
     },
     crearCaso: function crearCaso() {
-      var _this5 = this;
+      var _this6 = this;
 
       //Petición para guardar el registro en la base de datos
       axios.post('crear-caso', {
@@ -2899,11 +2932,11 @@ __webpack_require__.r(__webpack_exports__);
         cliente: this.cliente,
         abogado: this.abogado
       }).then(function (response) {
-        _this5.mensajeAlert = "¡Caso creado con exito!  Caso No. " + _this5.num_expediente;
-        _this5.alert = true;
-        _this5.colorMen = 'success';
+        _this6.mensajeAlert = "¡Caso creado con exito!  Caso No. " + _this6.num_expediente;
+        _this6.alert = true;
+        _this6.colorMen = 'success';
 
-        _this5.limpiarDatos();
+        _this6.limpiarDatos();
       }); //Fin Petición para guardar el registro en la base de datos
     },
     limpiarDatos: function limpiarDatos() {
@@ -2927,11 +2960,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   //Validador del formulario Cliente
   validateAsync: function validateAsync(ref) {
-    var _this6 = this;
+    var _this7 = this;
 
     return new Promise(function (resolve, reject) {
-      if (!_this6.$refs[ref].validate()) {
-        reject(_this6.mens);
+      if (!_this7.$refs[ref].validate()) {
+        reject(_this7.mens);
       } else {
         resolve(true);
       }
@@ -2941,6 +2974,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.listaClientes();
     this.listaAbogados();
+    this.listaCasos();
   }
 });
 
@@ -43367,8 +43401,8 @@ var render = function() {
                                 _c("v-data-table", {
                                   staticClass: "elevation-1",
                                   attrs: {
-                                    headers: _vm.headers,
-                                    items: _vm.desserts,
+                                    headers: _vm.headers3,
+                                    items: _vm.casos,
                                     "items-per-page": 10
                                   }
                                 })
